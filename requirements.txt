@@ -1,0 +1,9 @@
+bs4
+dnspython
+dns.exeption
+dns.resolver
+os
+python-nmap
+requests
+shodan
+subprocesses
