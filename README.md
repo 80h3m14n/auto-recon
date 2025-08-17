@@ -1,35 +1,43 @@
+An automated Script to perform a reconnaissance on a website for bug hunting purposes.
 
-Step 1: Reconnaissance.
+The tool utilizes popular open-source tools like Amass, nmap, ffuf, gobuster etc.
+
+
+--
+
+# Step 1: Reconnaissance
 
 Gather information about the target domains and sub-domains. Look for email addresses, sub-domains, and other relevant information.
 
-Public data 
+## Public data 
+
 - https://osintframework.com/
-- https://www.exploit-db.com/
-- https://pastebin.com/
-- https://web.archive.org/
+- https://www.exploit-db.com/
+- https://pastebin.com/
+- https://web.archive.org/
 
 
-
- Certificate check 
+ ## Certificate check 
 
 An SSL certificate subject alternative field lets certificate owners specify additional host names that use the same certificate
 
 - https://crt.sh
+
 - https://censys.io
 
 
-Acquisitions
+## Acquisitions
 
 - https://crunchbase.com
 
 
- Google-Fu
+ ## Google-Fu
 - Copyright text
 - Terms of service text
 - Privacy policy text
 
-  Web Spidering/Crawling 
+ 
+ ## Web Spidering/Crawling 
 
 Is a process used to identify all pages on a site
 
@@ -38,13 +46,13 @@ Is a process used to identify all pages on a site
 - theHarvester
 - Recon-ng
 
-Registry Data Access Protocol
+## Registry Data Access Protocol
  (RDAP)
 - https://whois.kenic.or.ke
 - https://arin.net/resources/registry/whois/rdap
 
 
-S3 Buckets
+## S3 Buckets
 
 S3 buckets can contain hidden endpoints, logs, credentials, user information, source code, and other useful information.
 
@@ -53,16 +61,18 @@ S3 buckets can contain hidden endpoints, logs, credentials, user information, so
 - https://github.com/eth0izzle/bucket-stream/
 
 
-$pip install awscli
-$aws s3 ls s3://BUCKET_NAME/
-$aws s3 cp s3://BUCKET_NAME/FILE_NAME/path/to/local/directory
+```bash
+pip install awscli
+aws s3 ls s3://BUCKET_NAME/
+aws s3 cp s3://BUCKET_NAME/FILE_NAME/path/to/local/directory
+```
 
-
-Step 2: Identify Technologies.
+# Step 2: Identify Technologies.
 
 Identify the technologies used by the website (e.g., CMS, frameworks, libraries).
 
-Advertisement/Analytics relationships
+## Advertisement/Analytics relationships
+
 - https://builtwith.com
 - https://publicwww.com
 - https://stackshare.io/
@@ -71,12 +81,12 @@ Advertisement/Analytics relationships
 - whatweb
 
 
-Append Phpmyadmin on url
+## Append Phpmyadmin on url
 - https://example.com/phpmyadmin
 
 
 
-Step 3: Enumeration.
+# Step 3: Enumeration
 
 Enumerating the target allows the tester to identify likely areas of weakness.
 
@@ -89,7 +99,7 @@ Base tools
 
 
 
-Sub-domain Enumeration.
+## Sub-domain Enumeration
 
 Each subdomain represents a new angle for attacking the network.
 The best way to enumerate subdomains is to use automation.
@@ -111,7 +121,7 @@ Wordlists
 - rockyou
 - seclist
 
-1. Linked & JS discovery 
+### 1. Linked & JS discovery 
 - Burp suite pro
 - Gospider 
 - hakrawler
@@ -119,10 +129,11 @@ Wordlists
 - https://retirejs.github.io/retire.js/
 
 
+```
+gobuster dns -d example.com -w wordlist.txt
+```
 
-$gobuster dns -d example.com -w wordlist.txt
-
-2. Sub-domain scraping 
+### 2. Sub-domain scraping 
 This exposes databases of URLs or domains.
 
 - Google dorks 
@@ -140,7 +151,7 @@ Examples of google dorks
 
 
 
-3. Subdomain brute-force 
+### 3. Subdomain brute-force 
 Guessing for live subdomains
 
 - Dirsearch
@@ -154,31 +165,33 @@ Guessing for live subdomains
 - DirBuster 
 - bfac 
 
+```
+amass enum -brute -d example.com -src
+```
 
-$amass enum -brute -d example.com -src
-
-5. Favicon hash
+### 4. Favicon hash
 - favihash
 
-6. Copyright/ unique string 
+### 5. Copyright/ unique string 
 - Google
 - https://shodan.io
 
 
 Search: http.html:"Copyright string"
 
-7. Services enumeration
+### 6. Services enumeration
 Since services often run on default ports, a good way to find them is by port-scanningthe machine with either active or passive scanning.
 
 - Massscan
 - Nmap
 - Shodan
 
-$nmap 
+```
+nmap <ip adddress> 
+```
 
 
-
-Directory and File Enumeration.
+## Directory and File Enumeration
 
 Identify hidden directories and files. 
 This can reveal sensitive information or hidden functionality.
@@ -193,7 +206,7 @@ Forced browsing Tools
 - Dirsearch
 
 
-Autonomous System Number 
+## Autonomous System Number 
 ASN enumeration 
 
 ASN Tools
@@ -207,10 +220,11 @@ ASN Tools
 - Europe: ripe.net
 - bbot
 
-$bbot -t example.com -f subdomain-enum
+```
+bbot -t example.com -f subdomain-enum
+```
 
-
-DNS Recon
+## DNS Recon
 Find & lookup dns records
 (A, AAA, MX, TXT, CNAME)
 
@@ -218,35 +232,41 @@ Find & lookup dns records
 
 
 
-Reverse DNS
+## Reverse DNS
 - dnsrecon
 
 $dnsrecon -r <DNS range>
 
 
-Reverse Whois (loop)
+## Reverse Whois (loop)
 
 Whois and reverse whois searches for the registrant and owner information of each known domain.
 
 Tools
+
 - https://reversewhois.io
+
 - https://viewdns.info/reversewhois/
+
 - https://whoxy.com
+
 - DOMLink(requires whoxy API key)
 
+```
+amass intel -d example.com -whois
 
-$amass intel -d example.com -whois
+whois example.com
+```
 
-$whois example.com
-
-IP Addresses
+## IP Addresses
 Another way of discovering your target’s top-level domains is to locateIP addresses
 
-$netdiscover example.com
-$whois <IP_address>
+```
+netdiscover example.com
+whois <IP_address>
+```
 
-
-Step 4: Vulnerability Scanning.
+# Step 4: Vulnerability Scanning
 
 Automated Scanning 
 Look for open ports, services, and known vulnerabilities.
@@ -256,7 +276,7 @@ Scanning tools
 - Nessus 
 - OpenVAS
 
-HTTP response analysis
+## HTTP response analysis
 - Content Security Policy (CSP)
 - Strict-Transport-Security (HSTS)
 - X-Content-Type-Options. 
@@ -266,7 +286,14 @@ HTTP response analysis
 
 Safe scanning methods 
 
-$nmap -A -F -T3 10.10.10.203 -v
-$ffuf -w wordlist.txt -u https://test.com/ -p 123
+```
+nmap -A -F -T3 10.10.10.203 -v
+
+ffuf -w wordlist.txt -u https://test.com/ -p 123
+```
+
+# Discalaimer
+This is a basic tool that I create while learning about automation, it may not be that effective but just works to some extend
+
 
 
